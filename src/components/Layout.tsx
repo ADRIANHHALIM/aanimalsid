@@ -9,21 +9,12 @@ const Layout = () => {
   const location = useLocation();
 
   useEffect(() => {
-    let isSubscribed = true;
-
-    const checkSession = () => {
-      // Only redirect if component is still mounted and we're not already on login
-      if (isSubscribed && !session && location.pathname !== "/login") {
-        navigate("/login", { replace: true });
-      }
-    };
-
-    checkSession();
-
-    return () => {
-      isSubscribed = false;
-    };
-  }, [session, navigate, location.pathname]);
+    // Only redirect if we're not already on login and there's no session
+    if (!session && location.pathname !== "/login") {
+      // Use replace to avoid building up history stack
+      navigate("/login", { replace: true });
+    }
+  }, [session, location.pathname]);
 
   if (!session) return null;
 
