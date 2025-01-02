@@ -10,10 +10,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isSubscribed = true;
+
     // Check if user is already logged in
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
+      if (session && isSubscribed) {
         navigate("/");
       }
     };
@@ -23,7 +25,9 @@ const Login = () => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN") {
+      if (!isSubscribed) return;
+
+      if (event === "SIGNED_IN" && session) {
         navigate("/");
       }
 
@@ -59,6 +63,7 @@ const Login = () => {
     });
 
     return () => {
+      isSubscribed = false;
       subscription.unsubscribe();
     };
   }, [toast, navigate]);
