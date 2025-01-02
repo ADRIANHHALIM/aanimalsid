@@ -3,29 +3,15 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        navigate("/", { replace: true });
-      }
-    };
-    checkSession();
-
     // Listen for auth state changes to catch errors
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN" && session) {
-        navigate("/", { replace: true });
-      }
-
+    } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === "USER_UPDATED") {
         toast({
           title: "Email confirmed",
@@ -59,7 +45,7 @@ const Login = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [toast, navigate]);
+  }, [toast]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
