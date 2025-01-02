@@ -22,10 +22,18 @@ const Login = () => {
       // Handle email confirmation error
       if (event === "SIGNED_OUT") {
         const error = new URLSearchParams(window.location.search).get("error");
+        const errorDescription = new URLSearchParams(window.location.search).get("error_description");
+        
         if (error === "email_not_confirmed") {
           toast({
             title: "Email Confirmation Required",
             description: "Please check your email and click the confirmation link before signing in.",
+            variant: "destructive",
+          });
+        } else if (error === "invalid_credentials" || errorDescription?.includes("Invalid login credentials")) {
+          toast({
+            title: "Invalid Credentials",
+            description: "The email or password you entered is incorrect. Please try again.",
             variant: "destructive",
           });
         }
