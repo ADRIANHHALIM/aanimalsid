@@ -11,7 +11,7 @@ const Login = () => {
     // Listen for auth state changes to catch errors
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "USER_UPDATED") {
         toast({
           title: "Email confirmed",
@@ -21,11 +21,13 @@ const Login = () => {
       
       // Handle authentication errors
       if (event === "SIGNED_OUT") {
+        // Check URL parameters for errors
         const error = new URLSearchParams(window.location.search).get("error");
         const errorDescription = new URLSearchParams(window.location.search).get("error_description");
         const errorCode = new URLSearchParams(window.location.search).get("code");
         
-        if (error === "email_not_confirmed" || errorCode === "email_not_confirmed") {
+        // Check both URL parameters and direct auth response
+        if (error === "email_not_confirmed" || errorCode === "email_not_confirmed" || errorDescription?.includes("Email not confirmed")) {
           toast({
             title: "Email Confirmation Required",
             description: "Please check your email and click the confirmation link before signing in.",
