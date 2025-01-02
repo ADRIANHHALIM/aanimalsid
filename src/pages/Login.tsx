@@ -16,7 +16,7 @@ const Login = () => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && isSubscribed) {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     };
     checkSession();
@@ -28,7 +28,7 @@ const Login = () => {
       if (!isSubscribed) return;
 
       if (event === "SIGNED_IN" && session) {
-        navigate("/");
+        navigate("/", { replace: true });
       }
 
       if (event === "USER_UPDATED") {
@@ -45,7 +45,6 @@ const Login = () => {
         const errorDescription = new URLSearchParams(window.location.search).get("error_description");
         const errorCode = new URLSearchParams(window.location.search).get("code");
         
-        // Check both URL parameters and direct auth response
         if (error === "email_not_confirmed" || errorCode === "email_not_confirmed" || errorDescription?.includes("Email not confirmed")) {
           toast({
             title: "Email Confirmation Required",
