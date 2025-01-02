@@ -69,6 +69,8 @@ const Login = () => {
           }}
           providers={["google", "facebook"]}
           redirectTo={`${window.location.origin}/`}
+          view="sign_in"
+          showLinks={false}
         />
       </div>
     </div>
