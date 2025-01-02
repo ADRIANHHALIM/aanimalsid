@@ -10,6 +10,11 @@ const Layout = () => {
   useEffect(() => {
     if (!session) {
       navigate("/login");
+    } else {
+      // Ensure we're on the correct route after login
+      if (window.location.pathname === "/login") {
+        navigate("/");
+      }
     }
   }, [session, navigate]);
 
