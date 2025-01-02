@@ -9,6 +9,7 @@ const Layout = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Only redirect to login if we're not already there and there's no session
     if (!session && location.pathname !== "/login") {
       navigate("/login");
     }
