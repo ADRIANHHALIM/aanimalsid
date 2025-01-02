@@ -1,8 +1,30 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 const Login = () => {
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Listen for auth state changes to catch errors
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "USER_UPDATED") {
+        toast({
+          title: "Email confirmed",
+          description: "You can now sign in to your account",
+        });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [toast]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
@@ -12,9 +34,28 @@ const Login = () => {
         </div>
         <Auth
           supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
+          appearance={{ 
+            theme: ThemeSupa,
+            variables: {
+              default: {
+                colors: {
+                  brand: '#E95901',
+                  brandAccent: '#FFD377',
+                }
+              }
+            }
+          }}
           providers={["google", "facebook"]}
           redirectTo={`${window.location.origin}/`}
+          onError={(error) => {
+            if (error.message.includes("email_not_confirmed")) {
+              toast({
+                title: "Email Confirmation Required",
+                description: "Please check your email and click the confirmation link before signing in.",
+                variant: "destructive",
+              });
+            }
+          }}
         />
       </div>
     </div>
