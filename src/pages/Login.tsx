@@ -11,7 +11,7 @@ const Login = () => {
     // Listen for auth state changes to catch errors
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "USER_UPDATED") {
         toast({
           title: "Email confirmed",
