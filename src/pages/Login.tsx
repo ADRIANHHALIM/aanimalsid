@@ -18,6 +18,15 @@ const Login = () => {
           description: "You can now sign in to your account",
         });
       }
+      
+      // Handle email confirmation error
+      if (event === "SIGNED_OUT" && session?.error?.message?.includes("email_not_confirmed")) {
+        toast({
+          title: "Email Confirmation Required",
+          description: "Please check your email and click the confirmation link before signing in.",
+          variant: "destructive",
+        });
+      }
     });
 
     return () => {
@@ -47,15 +56,6 @@ const Login = () => {
           }}
           providers={["google", "facebook"]}
           redirectTo={`${window.location.origin}/`}
-          onError={(error) => {
-            if (error.message.includes("email_not_confirmed")) {
-              toast({
-                title: "Email Confirmation Required",
-                description: "Please check your email and click the confirmation link before signing in.",
-                variant: "destructive",
-              });
-            }
-          }}
         />
       </div>
     </div>
