@@ -9,7 +9,253 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      appointments: {
+        Row: {
+          appointment_date: string
+          created_at: string
+          id: string
+          pet_id: string | null
+          status: string | null
+          type: string
+          vet_id: string | null
+        }
+        Insert: {
+          appointment_date: string
+          created_at?: string
+          id?: string
+          pet_id?: string | null
+          status?: string | null
+          type: string
+          vet_id?: string | null
+        }
+        Update: {
+          appointment_date?: string
+          created_at?: string
+          id?: string
+          pet_id?: string | null
+          status?: string | null
+          type?: string
+          vet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_vet_id_fkey"
+            columns: ["vet_id"]
+            isOneToOne: false
+            referencedRelation: "veterinarians"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      grooming_bookings: {
+        Row: {
+          booking_date: string
+          created_at: string
+          id: string
+          pet_id: string | null
+          service_id: string | null
+          status: string | null
+        }
+        Insert: {
+          booking_date: string
+          created_at?: string
+          id?: string
+          pet_id?: string | null
+          service_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          booking_date?: string
+          created_at?: string
+          id?: string
+          pet_id?: string | null
+          service_id?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "grooming_bookings_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "grooming_bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "grooming_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      grooming_services: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          location: string | null
+          name: string
+          price: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          price: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          price?: number
+        }
+        Relationships: []
+      }
+      medical_records: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          pet_id: string | null
+          record_date: string
+          record_type: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          pet_id?: string | null
+          record_date: string
+          record_type: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          pet_id?: string | null
+          record_date?: string
+          record_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medical_records_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pets: {
+        Row: {
+          age: number | null
+          breed: string | null
+          created_at: string
+          id: string
+          name: string
+          owner_id: string | null
+          photo_url: string | null
+          species: string
+        }
+        Insert: {
+          age?: number | null
+          breed?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          owner_id?: string | null
+          photo_url?: string | null
+          species: string
+        }
+        Update: {
+          age?: number | null
+          breed?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string | null
+          photo_url?: string | null
+          species?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pets_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone_number: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone_number?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone_number?: string | null
+        }
+        Relationships: []
+      }
+      veterinarians: {
+        Row: {
+          availability: Json | null
+          clinic_location: string | null
+          created_at: string
+          experience_years: number | null
+          id: string
+          name: string
+          specialization: string | null
+        }
+        Insert: {
+          availability?: Json | null
+          clinic_location?: string | null
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          name: string
+          specialization?: string | null
+        }
+        Update: {
+          availability?: Json | null
+          clinic_location?: string | null
+          created_at?: string
+          experience_years?: number | null
+          id?: string
+          name?: string
+          specialization?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

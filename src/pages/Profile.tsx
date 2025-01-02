@@ -2,14 +2,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Profile {
-  id: string;
-  full_name: string;
-  email: string;
-  phone_number: string;
-  avatar_url: string;
-}
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 const Profile = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -20,9 +15,9 @@ const Profile = () => {
       if (!user) return;
 
       const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
         .single();
 
       if (error) {
@@ -45,7 +40,7 @@ const Profile = () => {
           <Avatar className="w-20 h-20">
             <img
               src={profile.avatar_url || "/placeholder.svg"}
-              alt={profile.full_name}
+              alt={profile.full_name || ''}
               className="w-full h-full object-cover"
             />
           </Avatar>

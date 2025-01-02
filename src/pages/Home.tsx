@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
+import type { Database } from "@/integrations/supabase/types";
 
-interface Pet {
-  id: string;
-  name: string;
-  species: string;
-  age: number;
-  photo_url: string;
-}
+type Pet = Database['public']['Tables']['pets']['Row'];
 
 const Home = () => {
   const [pets, setPets] = useState<Pet[]>([]);
@@ -16,8 +11,8 @@ const Home = () => {
   useEffect(() => {
     const fetchPets = async () => {
       const { data, error } = await supabase
-        .from("pets")
-        .select("*");
+        .from('pets')
+        .select('*');
       
       if (error) {
         console.error("Error fetching pets:", error);
