@@ -19,12 +19,13 @@ const Login = () => {
         });
       }
       
-      // Handle email confirmation error
+      // Handle authentication errors
       if (event === "SIGNED_OUT") {
         const error = new URLSearchParams(window.location.search).get("error");
         const errorDescription = new URLSearchParams(window.location.search).get("error_description");
+        const errorCode = new URLSearchParams(window.location.search).get("code");
         
-        if (error === "email_not_confirmed") {
+        if (error === "email_not_confirmed" || errorCode === "email_not_confirmed") {
           toast({
             title: "Email Confirmation Required",
             description: "Please check your email and click the confirmation link before signing in.",
