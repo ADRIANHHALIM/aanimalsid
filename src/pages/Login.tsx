@@ -67,7 +67,7 @@ const Login = () => {
               }
             }
           }}
-          providers={["google", "facebook"]}
+          providers={["google"]}
           redirectTo={`${window.location.origin}/`}
           view="sign_in"
           showLinks={false}
